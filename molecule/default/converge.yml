@@ -1,0 +1,8 @@
+---
+- name: Converge
+  hosts: all
+  become: true
+  become_method: sudo
+  tasks:
+    - include_role:
+        name: ansible-nas

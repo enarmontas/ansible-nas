@@ -1,0 +1,43 @@
+---
+dependency:
+  name: galaxy
+  options:
+    role-file: requirements.yml
+driver:
+  name: vagrant
+  provider:
+    name: virtualbox
+platforms:
+  - name: nas-ubuntu-bionic
+    box: ubuntu/bionic64
+    memory: 4096
+    cpus: 2
+    instance_raw_config_args:
+      - "vm.network 'forwarded_port', guest: 80, host: 8081"
+    provider_raw_config_args:
+      - "customize ['createhd', '--filename', '/tmp/nas-disk-1.vdi', '--size', 10 * 1024]"
+      - "customize ['storageattach', :id, '--storagectl', 'SCSI', '--port', 2, '--device', 0, '--type', 'hdd', '--medium', '/tmp/nas-disk-1.vdi']"
+      - "customize ['createhd', '--filename', '/tmp/nas-disk-2.vdi', '--size', 10 * 1024]"
+      - "customize ['storageattach', :id, '--storagectl', 'SCSI', '--port', 3, '--device', 0, '--type', 'hdd', '--medium', '/tmp/nas-disk-2.vdi']"
+      - "customize ['createhd', '--filename', '/tmp/nas-disk-3.vdi', '--size', 2 * 1024]"
+      - "customize ['storageattach', :id, '--storagectl', 'SCSI', '--port', 4, '--device', 0, '--type', 'hdd', '--medium', '/tmp/nas-disk-3.vdi']"
+  - name: nas-debian-stretch
+    box: debian/stretch64
+    memory: 4096
+    cpus: 2
+    instance_raw_config_args:
+      - "vm.network 'forwarded_port', guest: 80, host: 8082"
+provisioner:
+  name: ansible
+  playbooks:
+    cleanup: cleanup.yml
+  lint:
+    name: ansible-lint
+  inventory:
+    host_vars:
+      nas-ubuntu-bionic:
+        configure_storage: true
+verifier:
+  name: testinfra
+  lint:
+    name: flake8
