@@ -61,6 +61,10 @@ Running playbook with Ansible Vault:
      ansible-playbook -i hosts nas.yml --vault-id ~/.ansible_id --ask-become-pass
 
 
+ansible-vault encrypt_string --vault-password-file ~/.ansible_id 'new password' --name 'openvpn_password'
+
+
+
 # To Do
 - [WARNING]: Docker warning: Your kernel does not support swap limit capabilities or the cgroup is not mounted. Memory limited without swap.
 - Tests

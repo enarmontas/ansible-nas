@@ -64,11 +64,14 @@
       OPENVPN_PROVIDER: "{{ transmission_openvpn_provider }}"
       OPENVPN_USERNAME: "{{ transmission_openvpn_username }}"
       OPENVPN_PASSWORD: "{{ transmission_openvpn_password }}"
-      OPENVPN_CONFIG: "{{ transmission_openvpn_config }}"
+      OPENVPN_OPTS: "--inactive 3600 --ping 10 --ping-exit 60"
+      NORDVPN_COUNTRY: LV
+      NORDVPN_PROTOCOL: tcp
+      NORDVPN_CATEGORY: P2P
       PUID: "{{ transmission_user_id }}"
       PGID: "{{ transmission_group_id }}"
       LOCAL_NETWORK: "{{ transmission_local_network }}"
-      ENABLE_UFW: false
+      ENABLE_UFW: "false"
     devices:
       - /dev/net/tun
     capabilities:
